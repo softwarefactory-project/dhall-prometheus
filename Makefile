@@ -1,9 +1,11 @@
 all: update lint freeze
 
+STORE_URL = "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/"
 update:
-	@python3 scripts/generate.py
+	@python3 scripts/schemastore-to-dhall.py $(STORE_URL)/prometheus.json
 
 freeze:
+	@python3 scripts/gen_package.py schemas > package.dhall
 	@dhall freeze --inplace ./package.dhall --all
 
 lint:
