@@ -2,12 +2,11 @@ let Prometheus =
       https://raw.githubusercontent.com/TristanCacqueray/dhall-prometheus/master/package.dhall sha256:b8e4d4ac75ae39241b59055bc341bc11afed319f0f35ebf8573669b8ab01fb8a
 
 let web_monitor_list =
-      [ "https://softwarefactory-project.io"
+      [ "https://www.softwarefactory-project.io"
       , "https://softwarefactory-project.io/zuul/api/info"
       , "https://review.rdoproject.org/zuul/api/info"
       , "https://ovirt.softwarefactory-project.io/zuul/api/info"
       , "https://ansible.softwarefactory-project.io/zuul/api/info"
-      , "https://www.softwarefactory-project.io"
       ]
 
 let host_list = [ "bridge:9100", "zuul:9100", "nodepool:9100" ]

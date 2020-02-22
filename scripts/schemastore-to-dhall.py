@@ -31,25 +31,33 @@ Type = Dict[Attribute, DhallType]
 TypeName = str
 Types = List[Tuple[TypeName, Type]]
 
+# Prometheus hardcoded work around to fixup invalid types
+Fixes: Dict[TypeName, Type] = dict(
+    params=dict(
+        module="Optional (List Text)"
+    )
+)
+
+
 def capitalize(name: str) -> str:
     return "".join(map(lambda x: x[0].upper() + x[1:], name.split('_')))
 
 
 def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Tuple[DhallType, Types]:
-    """Convert a property to a name and add new discovered types to the list of types"""
+    """Convert a property to a dhall type name. Also add newly discovered types to the list of types"""
     _type: Optional[str] = None
     value.setdefault('type', ['string'])
     if not isinstance(value['type'], list):
         value['type'] = [value['type']]
     if value.get("$ref"):
         ref = value['$ref'].split('/')[-1]
-        return dhall_type(defs[ref], capitalize(ref), types, defs)
+        return dhall_type(defs[ref], ref, types, defs)
 
     elif "object" in value["type"]:
-        types = types + process(value, name, defs)
+        types = types + dhall_record(value, name, defs)
         _type = "(./" + capitalize(name) + ".dhall).Type"
     elif "array" in value["type"]:
-        _type, types = dhall_type(value['items'], capitalize(name[:-1]), types, defs)
+        _type, types = dhall_type(value['items'], name[:-1], types, defs)
         _type = "List %s" % _type.replace('Optional ', '')
     elif "string" in value["type"]:
         _type = 'Text'
@@ -66,13 +74,12 @@ def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Tuple[Dh
     return (("Optional " if name not in value.get("required", []) else "") + _type, types)
 
 
-def process(obj: Object, name: str, defs: Defs) -> Types:
-    """Convert an object to a dhall record"""
+def dhall_record(obj: Object, name: str, defs: Defs) -> Types:
+    """Convert an object to a list of named dhall record"""
     types: Types = []
     new_type: Type = {}
-    if name == "params" and not obj.get('properties'):
-        # Add missing type
-        new_type["module"] = "Optional (List Text)"
+    if name in Fixes and not obj.get('properties'):
+        new_type.update(Fixes[name])
     for key, value in obj.get('properties', {}).items():
         dhall_type_str, types = dhall_type(value, key, types, defs)
         new_type[key] = dhall_type_str
@@ -82,19 +89,19 @@ def process(obj: Object, name: str, defs: Defs) -> Types:
 SchemasFiles = List[Tuple[str, str]]
 def processSchema(path: str) -> SchemasFiles:
     schema = json.loads(open(path).read())
-    env = schema["definitions"]
     results: SchemasFiles = []
-    for name, type_def in process(schema, "Config", schema["definitions"]):
+    for name, type_def in dhall_record(schema, "Config", schema["definitions"]):
         defaults = " , ".join([
-            f"{k} = {v.replace('Optional', 'None')}" for k,v in type_def.items()
+            f"{k} = {v.replace('Optional', 'None')}"
+            for k,v in type_def.items()
             if v.startswith("Optional ")])
         results.append((
             f"schemas/{name}.dhall",
             "{ %s }" % " , ".join([
                 "Type = { %s }" % " , ".join([f"{k} : {v}" for k,v in type_def.items()]),
-                "default = { %s }" % (defaults if defaults else "=")
-            ])))
+                "default = { %s }" % (defaults if defaults else "=")])))
     return results
+
 
 if __name__ == "__main__":
     try:
