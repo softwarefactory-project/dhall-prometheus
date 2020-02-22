@@ -1,4 +1,4 @@
-all: update lint freeze
+all: update lint freeze doc
 
 STORE_URL = "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/"
 update:
@@ -10,3 +10,6 @@ freeze:
 
 lint:
 	@find . -name "*.dhall" -exec dhall --ascii format --inplace {} \;
+
+doc:
+	@python3 scripts/doc.py
