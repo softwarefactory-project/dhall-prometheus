@@ -39,7 +39,11 @@ Fixes: Dict[TypeName, Type] = dict(
     annotations=dict(
         summary="Text",
         description="Optional Text"
-    )
+    ),
+    labels=dict(
+        severity="Text",
+        lasttime="Text"
+    ),
 )
 
 

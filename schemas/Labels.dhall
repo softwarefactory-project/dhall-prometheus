@@ -1,1 +1,1 @@
-{ Type = {}, default = {=} }
+{ Type = { severity : Text, lasttime : Text }, default = {=} }
