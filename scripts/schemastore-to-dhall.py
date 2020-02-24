@@ -35,6 +35,10 @@ Types = List[Tuple[TypeName, Type]]
 Fixes: Dict[TypeName, Type] = dict(
     params=dict(
         module="Optional (List Text)"
+    ),
+    annotations=dict(
+        summary="Text",
+        description="Optional Text"
     )
 )
 
@@ -46,13 +50,19 @@ def capitalize(name: str) -> str:
 def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Tuple[DhallType, Types]:
     """Convert a property to a dhall type name. Also add newly discovered types to the list of types"""
     _type: Optional[str] = None
-    value.setdefault('type', ['string'])
-    if not isinstance(value['type'], list):
+
+    # TODO: remove this work-around
+    if not value.get('type'):
+        if value.get('oneOf'):
+            # Arbritary selection that works better for rules
+            value = value['oneOf'][-1]
+        value.setdefault('type', ['string'])
+
+    if value.get('type') and not isinstance(value['type'], list):
         value['type'] = [value['type']]
     if value.get("$ref"):
         ref = value['$ref'].split('/')[-1]
         return dhall_type(defs[ref], ref, types, defs)
-
     elif "object" in value["type"]:
         types = types + dhall_record(value, name, defs)
         _type = "(./" + capitalize(name) + ".dhall).Type"

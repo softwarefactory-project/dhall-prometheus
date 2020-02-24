@@ -8,7 +8,7 @@ The schema is generated from json SchemaStore.
 ```dhall
 {- ./examples/demo.dhall -}
 let Prometheus =
-      https://raw.githubusercontent.com/TristanCacqueray/dhall-prometheus/master/package.dhall sha256:b8e4d4ac75ae39241b59055bc341bc11afed319f0f35ebf8573669b8ab01fb8a
+      https://raw.githubusercontent.com/TristanCacqueray/dhall-prometheus/master/package.dhall
 
 let web_monitor_list =
       [ "https://www.softwarefactory-project.io"
