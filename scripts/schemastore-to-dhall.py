@@ -87,10 +87,10 @@ def dhall_record(obj: Object, name: str, defs: Defs) -> Types:
 
 
 SchemasFiles = List[Tuple[str, str]]
-def processSchema(path: str) -> SchemasFiles:
+def processSchema(name: str, path: str) -> SchemasFiles:
     schema = json.loads(open(path).read())
     results: SchemasFiles = []
-    for name, type_def in dhall_record(schema, "Config", schema["definitions"]):
+    for name, type_def in dhall_record(schema, name, schema["definitions"]):
         defaults = " , ".join([
             f"{k} = {v.replace('Optional', 'None')}"
             for k,v in type_def.items()
@@ -105,9 +105,10 @@ def processSchema(path: str) -> SchemasFiles:
 
 if __name__ == "__main__":
     try:
-        path = sys.argv[1].split('/')[-1]
+        name = sys.argv[1]
+        path = sys.argv[2].split('/')[-1]
     except:
-        print("usage: %s file" % sys.argv[0])
+        print("usage: %s name file" % sys.argv[0])
         exit(1)
-    for path, content in processSchema(path):
+    for path, content in processSchema(name, path):
         open(path, "w").write(content)
