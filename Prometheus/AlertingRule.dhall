@@ -6,10 +6,10 @@
     , annotations : Optional (./Annotations.dhall).Type
     }
 , default =
-    { alert = None Text
-    , expr = None Text
-    , for = None Text
-    , labels = None (./Labels.dhall).Type
-    , annotations = None (./Annotations.dhall).Type
-    }
+  { alert = None Text
+  , expr = None Text
+  , for = None Text
+  , labels = None (./Labels.dhall).Type
+  , annotations = None (./Annotations.dhall).Type
+  }
 }

@@ -78,9 +78,9 @@ alerting:
         - targets:
             - localhost:9093
 global:
-  evaluation_interval: 1m
-  scrape_interval: 1m
-  scrape_timeout: 10s
+  evaluation_interval: "1m"
+  scrape_interval: "1m"
+  scrape_timeout: "10s"
 scrape_configs:
   - job_name: node
     static_configs:
@@ -95,14 +95,14 @@ scrape_configs:
         - http_2xx
     relabel_configs:
       - source_labels:
-          - __address__
-        target_label: __param_target
+          - "__address__"
+        target_label: "__param_target"
       - source_labels:
-          - __param_target
+          - "__param_target"
         target_label: instance
-      - replacement: 127.0.0.1:9115
-        target_label: __address__
-    scrape_interval: 5m
+      - replacement: "127.0.0.1:9115"
+        target_label: "__address__"
+    scrape_interval: "5m"
     static_configs:
       - targets:
           - https://www.softwarefactory-project.io

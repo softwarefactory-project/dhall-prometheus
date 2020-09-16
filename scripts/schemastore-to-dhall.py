@@ -110,7 +110,7 @@ def processSchema(name: str, path: str) -> SchemasFiles:
             for k,v in type_def.items()
             if v.startswith("Optional ")])
         results.append((
-            f"schemas/{name}.dhall",
+            f"Prometheus/{name}.dhall",
             "{ %s }" % " , ".join([
                 "Type = { %s }" % " , ".join([f"{k} : {v}" for k,v in type_def.items()]),
                 "default = { %s }" % (defaults if defaults else "=")])))

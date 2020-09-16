@@ -8,12 +8,12 @@
     , max_backoff : Optional Text
     }
 , default =
-    { capacity = None Natural
-    , max_shards = None Natural
-    , min_shards = None Natural
-    , max_samples_per_send = None Natural
-    , batch_send_deadline = None Text
-    , min_backoff = None Text
-    , max_backoff = None Text
-    }
+  { capacity = None Natural
+  , max_shards = None Natural
+  , min_shards = None Natural
+  , max_samples_per_send = None Natural
+  , batch_send_deadline = None Text
+  , min_backoff = None Text
+  , max_backoff = None Text
+  }
 }

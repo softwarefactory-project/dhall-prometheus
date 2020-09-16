@@ -7,11 +7,11 @@
     , alerting : Optional (./Alerting.dhall).Type
     }
 , default =
-    { global = None (./Global.dhall).Type
-    , rule_files = None (List Text)
-    , remote_write = None (List (./RemoteWrit.dhall).Type)
-    , remote_read = None (List (./RemoteRea.dhall).Type)
-    , scrape_configs = None (List (./ScrapeConfig.dhall).Type)
-    , alerting = None (./Alerting.dhall).Type
-    }
+  { global = None (./Global.dhall).Type
+  , rule_files = None (List Text)
+  , remote_write = None (List (./RemoteWrit.dhall).Type)
+  , remote_read = None (List (./RemoteRea.dhall).Type)
+  , scrape_configs = None (List (./ScrapeConfig.dhall).Type)
+  , alerting = None (./Alerting.dhall).Type
+  }
 }
