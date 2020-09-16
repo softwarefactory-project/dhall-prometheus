@@ -51,7 +51,7 @@ def capitalize(name: str) -> str:
     return "".join(map(lambda x: x[0].upper() + x[1:], name.split('_')))
 
 
-def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Tuple[DhallType, Types]:
+def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Optional[Tuple[DhallType, Types]]:
     """Convert a property to a dhall type name. Also add newly discovered types to the list of types"""
     _type: Optional[str] = None
 
@@ -68,10 +68,15 @@ def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Tuple[Dh
         ref = value['$ref'].split('/')[-1]
         return dhall_type(defs[ref], ref, types, defs)
     elif "object" in value["type"]:
+        if all(map(lambda k: not value.get(k), ["properties", "patternProperties", "additionalProperties"])):
+            return None
         types = types + dhall_record(value, name, defs)
         _type = "(./" + capitalize(name) + ".dhall).Type"
     elif "array" in value["type"]:
-        _type, types = dhall_type(value['items'], name[:-1], types, defs)
+        dt = dhall_type(value['items'], name[:-1], types, defs)
+        if not dt:
+            return None
+        _type, types = dt
         _type = "List %s" % _type.replace('Optional ', '')
     elif "string" in value["type"]:
         _type = 'Text'
@@ -95,8 +100,10 @@ def dhall_record(obj: Object, name: str, defs: Defs) -> Types:
     if name in Fixes and not obj.get('properties'):
         new_type.update(Fixes[name])
     for key, value in obj.get('properties', {}).items():
-        dhall_type_str, types = dhall_type(value, key, types, defs)
-        new_type[key] = dhall_type_str
+        dt = dhall_type(value, key, types, defs)
+        if dt:
+            dhall_type_str, types = dt
+            new_type[key] = dhall_type_str
     return types + [(capitalize(name), new_type)]
 
 
@@ -104,7 +111,8 @@ SchemasFiles = List[Tuple[str, str]]
 def processSchema(name: str, path: str) -> SchemasFiles:
     schema = json.loads(open(path).read())
     results: SchemasFiles = []
-    for name, type_def in dhall_record(schema, name, schema["definitions"]):
+    for name, type_def in [(name, type_def) for (name, type_def) in dhall_record(schema, name, schema["definitions"])
+                           if type_def]:
         defaults = " , ".join([
             f"{k} = {v.replace('Optional', 'None')}"
             for k,v in type_def.items()
