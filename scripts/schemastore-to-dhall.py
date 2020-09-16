@@ -73,7 +73,7 @@ def dhall_type(value: Property, name: str, types: Types, defs: Defs) -> Optional
         types = types + dhall_record(value, name, defs)
         _type = "(./" + capitalize(name) + ".dhall).Type"
     elif "array" in value["type"]:
-        dt = dhall_type(value['items'], name[:-1], types, defs)
+        dt = dhall_type(value['items'], name.rstrip('s'), types, defs)
         if not dt:
             return None
         _type, types = dt
