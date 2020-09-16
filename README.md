@@ -6,9 +6,8 @@ The schema is generated from json SchemaStore.
 ## Example
 
 ```dhall
-{- ./examples/demo.dhall -}
-let Prometheus =
-      https://raw.githubusercontent.com/TristanCacqueray/dhall-prometheus/master/package.dhall
+-- ./examples/demo.dhall
+let Prometheus = ../package.dhall
 
 let web_monitor_list =
       [ "https://www.softwarefactory-project.io"
@@ -70,7 +69,7 @@ in  Prometheus.Config::{
 ```
 
 ```yaml
-# dhall-to-yaml --omit-empty --explain --file examples/demo.dhall
+# dhall-to-yaml --file examples/demo.dhall
 alerting:
   alertmanagers:
     - path_prefix: /alertmanager
@@ -78,9 +77,9 @@ alerting:
         - targets:
             - localhost:9093
 global:
-  evaluation_interval: 1m
-  scrape_interval: 1m
-  scrape_timeout: 10s
+  evaluation_interval: "1m"
+  scrape_interval: "1m"
+  scrape_timeout: "10s"
 scrape_configs:
   - job_name: node
     static_configs:
@@ -95,14 +94,14 @@ scrape_configs:
         - http_2xx
     relabel_configs:
       - source_labels:
-          - __address__
-        target_label: __param_target
+          - "__address__"
+        target_label: "__param_target"
       - source_labels:
-          - __param_target
+          - "__param_target"
         target_label: instance
-      - replacement: 127.0.0.1:9115
-        target_label: __address__
-    scrape_interval: 5m
+      - replacement: "127.0.0.1:9115"
+        target_label: "__address__"
+    scrape_interval: "5m"
     static_configs:
       - targets:
           - https://www.softwarefactory-project.io

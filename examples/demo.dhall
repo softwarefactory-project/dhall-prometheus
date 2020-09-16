@@ -1,5 +1,4 @@
-let Prometheus =
-      https://raw.githubusercontent.com/TristanCacqueray/dhall-prometheus/master/package.dhall
+let Prometheus = ../package.dhall
 
 let web_monitor_list =
       [ "https://www.softwarefactory-project.io"
