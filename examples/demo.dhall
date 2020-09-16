@@ -29,7 +29,11 @@ in  Prometheus.Config::{
       [ Prometheus.ScrapeConfig::{
         , job_name = Some "node"
         , static_configs = Some
-          [ Prometheus.StaticConfig::{ targets = Some host_list } ]
+          [ Prometheus.StaticConfig::{
+            , targets = Some host_list
+            , labels = Some (Prometheus.Labels.severity "critical")
+            }
+          ]
         }
       , Prometheus.ScrapeConfig::{
         , job_name = Some "blackbox"

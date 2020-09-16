@@ -40,10 +40,6 @@ Fixes: Dict[TypeName, Type] = dict(
         summary="Text",
         description="Optional Text"
     ),
-    labels=dict(
-        severity="Text",
-        lasttime="Text"
-    ),
 )
 
 

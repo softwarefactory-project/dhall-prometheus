@@ -38,7 +38,11 @@ in  Prometheus.Config::{
       [ Prometheus.ScrapeConfig::{
         , job_name = Some "node"
         , static_configs = Some
-          [ Prometheus.StaticConfig::{ targets = Some host_list } ]
+          [ Prometheus.StaticConfig::{
+            , targets = Some host_list
+            , labels = Some (Prometheus.Labels.severity "critical")
+            }
+          ]
         }
       , Prometheus.ScrapeConfig::{
         , job_name = Some "blackbox"
@@ -83,7 +87,9 @@ global:
 scrape_configs:
   - job_name: node
     static_configs:
-      - targets:
+      - labels:
+          severity: critical
+        targets:
           - bridge:9100
           - zuul:9100
           - nodepool:9100
@@ -112,5 +118,29 @@ scrape_configs:
 
 ```
 
+To define custom labels, use the `Labels.mapText` function or create your own [JSON/Type][JSON/Type]:
+
+```
+-- ./examples/labels.dhall
+let Prometheus = ../package.dhall
+
+in  Prometheus.Config::{
+    , global = Some Prometheus.Global::{
+      , external_labels = Some
+          (Prometheus.Labels.mapText (toMap { my-label = "custom-value" }))
+      }
+    }
+
+```
+
+```yaml
+# dhall-to-yaml --file examples/labels.dhall
+global:
+  external_labels:
+    my-label: custom-value
+
+```
+
+[JSON/Type]: https://github.com/dhall-lang/dhall-lang/blob/master/Prelude/JSON/Type.dhall
 [dhall-lang]: https://dhall-lang.org
 [Prometheus]: https://prometheus.io
