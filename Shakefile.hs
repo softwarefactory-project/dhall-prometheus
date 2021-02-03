@@ -22,5 +22,6 @@ main = shakeMain $ do
   "package.dhall" %> dhallTopLevelPackageAction "./Prometheus/package.dhall"
   "//package.dhall" %> dhallPackageAction
   dhallDocsRules "dhall-prometheus"
+  dhallReleaseRules "./Prometheus/package.dhall"
   phony "update" updateSchemas
   cleanRules

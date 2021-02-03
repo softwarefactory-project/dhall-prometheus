@@ -141,6 +141,14 @@ global:
 
 ```
 
+## Changes
+
+Frozen packages are available in the tag commit.
+
+### 0.1.0
+
+- Initial release
+
 [JSON/Type]: https://github.com/dhall-lang/dhall-lang/blob/master/Prelude/JSON/Type.dhall
 [dhall-lang]: https://dhall-lang.org
 [Prometheus]: https://prometheus.io
