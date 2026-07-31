@@ -13,6 +13,7 @@
     , tls_config : Optional (./TlsConfig.dhall).Type
     , proxy_url : Optional Text
     , file_sd_configs : Optional (List (./FileSdConfig.dhall).Type)
+    , kubernetes_sd_configs : Optional (List (./KubernetesSdConfig.dhall).Type)
     , static_configs : Optional (List (./StaticConfig.dhall).Type)
     , relabel_configs : Optional (List (./RelabelConfig.dhall).Type)
     , metric_relabel_configs : Optional (List (./RelabelConfig.dhall).Type)
@@ -34,6 +35,7 @@
   , proxy_url = None Text
   , file_sd_configs = None (List (./FileSdConfig.dhall).Type)
   , static_configs = None (List (./StaticConfig.dhall).Type)
+  , kubernetes_sd_configs = None (List (./KubernetesSdConfig.dhall).Type)
   , relabel_configs = None (List (./RelabelConfig.dhall).Type)
   , metric_relabel_configs = None (List (./RelabelConfig.dhall).Type)
   , sample_limit = None Natural

@@ -15,6 +15,7 @@
 , RemoteWrite = ./RemoteWrite.dhall
 , RulesConfig = ./RulesConfig.dhall
 , ScrapeConfig = ./ScrapeConfig.dhall
+, KubernetesSdConfig = ./KubernetesSdConfig.dhall
 , StaticConfig = ./StaticConfig.dhall
 , TlsConfig = ./TlsConfig.dhall
 }
