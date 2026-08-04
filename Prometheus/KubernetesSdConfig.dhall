@@ -2,7 +2,7 @@
 { Type =
     { api_server : Optional Text
     , role : Text
-    , namespaces : Optional (./K8sNamespacesConfig.dhall).Type
+    , namespaces : Optional (./K8sNamespaceConfig.dhall).Type
     , basic_auth : Optional (./BasicAuth.dhall).Type
     , bearer_token : Optional Text
     , bearer_token_file : Optional Text
