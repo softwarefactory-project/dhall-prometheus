@@ -1,14 +1,8 @@
-let  k8s_namespaces_config =
-    { Type =
-        { own_namespace : Bool
-        , names : Optional (List Text)
-        }
-    }
 
-in { Type =
+{ Type =
     { api_server : Optional Text
     , role : Text
-    , namespaces : Optional k8s_namespaces_config.Type
+    , namespaces : Optional (./K8sNamespacesConfig.dhall).Type
     , basic_auth : Optional (./BasicAuth.dhall).Type
     , bearer_token : Optional Text
     , bearer_token_file : Optional Text
@@ -16,7 +10,6 @@ in { Type =
     , proxy_url : Optional Text
     }
 , default =
-   { targets = None (List Text)
-   , labels = None (./Labels.dhall).Type
+   { role = "pod"
    }
 }

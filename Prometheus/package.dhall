@@ -7,6 +7,8 @@
 , FileSdConfig = ./FileSdConfig.dhall
 , Global = ./Global.dhall
 , Group = ./Group.dhall
+, K8sNamespaceConfig = ./K8sNamespaceConfig.dhall
+, KubernetesSdConfig = ./KubernetesSdConfig.dhall
 , Labels = ./Labels.dhall
 , Params = ./Params.dhall
 , QueueConfig = ./QueueConfig.dhall
@@ -15,7 +17,6 @@
 , RemoteWrite = ./RemoteWrite.dhall
 , RulesConfig = ./RulesConfig.dhall
 , ScrapeConfig = ./ScrapeConfig.dhall
-, KubernetesSdConfig = ./KubernetesSdConfig.dhall
 , StaticConfig = ./StaticConfig.dhall
 , TlsConfig = ./TlsConfig.dhall
 }
